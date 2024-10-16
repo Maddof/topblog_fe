@@ -1,0 +1,25 @@
+.postHeadline {
+  margin-bottom: 0.5em;
+}
+
+.postDetails {
+  font-style: italic;
+  margin-top: 0;
+  font-size: 95%;
+}
+
+.commentWrapper {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.commentItem {
+  padding: 1em;
+  border: 2px solid #646cff;
+  margin-bottom: 1em;
+}
+
+.commentItem > p:first-child {
+  margin: 0;
+}

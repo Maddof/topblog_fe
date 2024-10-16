@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../axiosConfig"; // Import the axios instance with baseURL
+import useDocumentTitle from "../utils/documentTitle";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useDocumentTitle("Home blog");
 
   useEffect(() => {
     // Fetch the published posts
