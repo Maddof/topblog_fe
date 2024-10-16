@@ -1,7 +1,6 @@
-import { formatTimeAgo } from "../utils/formatDate";
+import { formatTimeAgo } from "../../utils/formatDate";
 
 const Comment = ({ comment }) => {
-  console.log(comment);
   return (
     <>
       <p>

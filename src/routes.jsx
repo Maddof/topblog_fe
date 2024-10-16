@@ -1,5 +1,5 @@
 import HomePage from "./pages/HomePage";
-import PostPage from "./pages/PostPage";
+import PostPage from "./pages/postpage/PostPage";
 import ErrorPage from "./pages/errorPage";
 import Layout from "./layout";
 
