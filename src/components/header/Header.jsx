@@ -10,10 +10,11 @@ const Header = () => {
           <img src="/logo.svg" alt="Logo" />
         </Link>
         <h1>My Blog</h1>
+        <nav>
+          <Link to="/login">Login</Link>
+          <Link to="/dashboard">Dashboard</Link>
+        </nav>
       </div>
-      {/* <nav>
-        <Link to="/">Home</Link>
-      </nav> */}
     </header>
   );
 };
