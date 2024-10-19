@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../config/AuthContext";
 import api from "../../config/axiosConfig";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
@@ -49,6 +50,13 @@ const Dashboard = () => {
           ? "Currently logged in as ADMIN"
           : "Currently Logged in USER"}
       </p>
+
+      {role === "ADMIN" ? (
+        <Link to={"comments"}> Manage Comments </Link>
+      ) : (
+        "Manage something"
+      )}
+
       <ul>
         {posts.map((post, index) => (
           <li key={index}>{post}</li>

@@ -1,4 +1,5 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
+import api from "./axiosConfig";
 
 const AuthContext = createContext();
 
@@ -10,14 +11,34 @@ const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [role, setRole] = useState(null); // Store user role
 
+  useEffect(() => {
+    // Optional: Check if there's already a session on mount
+    const checkSession = async () => {
+      try {
+        const response = await api.post("/auth/refresh-token"); // Try to refresh token
+        setAccessToken(response.data.accessToken);
+        setRole(response.data.role);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    checkSession();
+  }, []);
+
   const login = (token, userRole) => {
     setAccessToken(token);
     setRole(userRole); // Set the role in the context
   };
 
-  const logout = () => {
-    setAccessToken(null);
-    setRole(null); // Clear the role on logout
+  const logout = async () => {
+    try {
+      await api.post("/auth/logout"); // Logout request to invalidate refresh token
+      setAccessToken(null); // Clear access token
+      setRole(null);
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
   };
 
   return (

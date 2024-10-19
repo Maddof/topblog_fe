@@ -4,6 +4,7 @@ import ErrorPage from "./pages/errorPage";
 import Layout from "./layout";
 import Login from "./pages/loginpage/LoginPage";
 import Dashboard from "./pages/admin/Dashboard";
+import { ManageComments } from "./pages/admin/ManageComments";
 
 const routes = [
   {
@@ -21,7 +22,11 @@ const routes = [
       },
       {
         path: "dashboard",
-        element: <Dashboard />, // Displays all blog posts
+        element: <Dashboard />, // Admin dashboard for USER AND ADMIN
+      },
+      {
+        path: "dashboard/comments",
+        element: <ManageComments />, // Sub-route for managing comments
       },
       {
         path: "posts/:postId",

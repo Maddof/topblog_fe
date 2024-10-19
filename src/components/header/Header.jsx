@@ -4,7 +4,11 @@ import styles from "./Header.module.css";
 import { useAuth } from "../../config/AuthContext";
 
 const Header = () => {
-  const { accessToken } = useAuth();
+  const { accessToken, logout } = useAuth(); // Get accessToken and logout from context
+
+  const handleLogout = () => {
+    logout(); // Call the logout function
+  };
 
   return (
     <header>
@@ -16,7 +20,13 @@ const Header = () => {
         <nav>
           <ul>
             <li>
-              {accessToken ? "Logged in" : <Link to="/login">Login</Link>}
+              {accessToken ? (
+                <a href="#" onClick={handleLogout}>
+                  Logout
+                </a>
+              ) : (
+                <Link to="/login">Login</Link>
+              )}
             </li>
             <li>
               <Link to="/dashboard">Dashboard</Link>

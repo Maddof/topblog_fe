@@ -12,8 +12,6 @@ const LoginForm = () => {
 
   const navigate = useNavigate(); // Hook (react) to redirect
 
-  api.defaults.withCredentials = true;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
