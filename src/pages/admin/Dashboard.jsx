@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-
-import api from "../axiosConfig";
+import { useAuth } from "../../config/AuthContext";
+import api from "../../config/axiosConfig";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const location = useLocation();
-  const { accessToken } = location.state || {}; // Get access token from navigation state
+  const { accessToken } = useAuth(); // Get accessToken from context
 
   useEffect(() => {
     const fetchProtectedData = async () => {
@@ -21,7 +19,6 @@ const Dashboard = () => {
         });
         setPosts(response.data.stuff);
         setLoading(false);
-        console.log(response);
       } catch (error) {
         setError("Failed to fetch");
         setLoading(false);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../../axiosConfig";
+import api from "../../config/axiosConfig";
 import styles from "./CommentForm.module.css"; // Optional CSS module for styling
 import { validateComment } from "../../utils/commentValidation";
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import api from "../axiosConfig"; // Import the axios instance with baseURL
+import api from "../config/axiosConfig"; // Import the axios instance with baseURL
 import useDocumentTitle from "../utils/documentTitle";
 
 const Home = () => {

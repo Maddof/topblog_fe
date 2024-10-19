@@ -3,7 +3,7 @@ import PostPage from "./pages/postpage/PostPage";
 import ErrorPage from "./pages/errorPage";
 import Layout from "./layout";
 import Login from "./pages/loginpage/LoginPage";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/admin/Dashboard";
 
 const routes = [
   {

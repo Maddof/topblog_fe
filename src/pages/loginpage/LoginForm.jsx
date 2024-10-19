@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../axiosConfig";
+import api from "../../config/axiosConfig";
+import { useAuth } from "../../config/AuthContext";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
+
+  const { setAccessToken } = useAuth();
 
   const navigate = useNavigate(); // Hook (react) to redirect
 
@@ -18,21 +20,12 @@ const LoginForm = () => {
       const response = await api.post("/auth/login", { email, password });
       const { accessToken } = response.data;
 
-      setAccessToken(accessToken); // Store the token in local state
+      setAccessToken(accessToken); // Store the token in context
 
       console.log(response.data);
 
-      // Redirect to dashboard and pass the token
-
-      navigate("/dashboard", { state: { accessToken } });
-      // Store the token in localStorage
-      // localStorage.setItem("token", token);
-      // Redirect based on role (optional)
-      // if (role === "ADMIN") {
-      //   window.location.href = "/";
-      // } else {
-      //   window.location.href = "/";
-      // }
+      // Redirect to dashboard
+      navigate("/dashboard");
     } catch (err) {
       setError("Invalid login credentials");
     }
