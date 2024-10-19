@@ -8,7 +8,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const { setAccessToken } = useAuth();
+  const { login } = useAuth(); // Destructure login function from context
 
   const navigate = useNavigate(); // Hook (react) to redirect
 
@@ -18,9 +18,10 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       const response = await api.post("/auth/login", { email, password });
-      const { accessToken } = response.data;
+      const { accessToken, role } = response.data;
 
-      setAccessToken(accessToken); // Store the token in context
+      // Store token and role in context
+      login(accessToken, role);
 
       console.log(response.data);
 

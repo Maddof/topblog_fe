@@ -7,7 +7,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { accessToken } = useAuth(); // Get accessToken from context
+  const { accessToken, role } = useAuth(); // Get accessToken from context
 
   useEffect(() => {
     const fetchProtectedData = async () => {
@@ -44,6 +44,11 @@ const Dashboard = () => {
   return (
     <div>
       <p>My dashboard</p>
+      <p>
+        {role === "ADMIN"
+          ? "Currently logged in as ADMIN"
+          : "Currently Logged in USER"}
+      </p>
       <ul>
         {posts.map((post, index) => (
           <li key={index}>{post}</li>
