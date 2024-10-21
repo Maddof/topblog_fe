@@ -8,7 +8,8 @@ import { useAuth } from "../../config/AuthContext";
 const ManageComments = () => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // For fetching errors
+  const [deleteError, setDeleteError] = useState(null); // For deletion errors
 
   useDocumentTitle("Manage comments");
   const { accessToken, role } = useAuth();
@@ -29,8 +30,6 @@ const ManageComments = () => {
   }, []);
 
   const handleDelete = async (commentId, postId) => {
-    console.log("DELETED COMMENT: " + commentId + " " + postId);
-
     try {
       const response = await api.delete(
         `/posts/${postId}/comments/${commentId}`,
@@ -41,8 +40,14 @@ const ManageComments = () => {
         }
       );
       console.log("Successfully deleted comment ", response);
+
+      // Remove the deleted comment from the state
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== commentId)
+      );
     } catch (error) {
       console.error("Error deleting comment", error);
+      setDeleteError("Failed to delete the comment. Please try again.");
     }
   };
 
@@ -58,6 +63,9 @@ const ManageComments = () => {
     <>
       <div>
         <p>Manage you comments here</p>
+        {/* Display error if comment deletion fails */}
+        {deleteError && <p style={{ color: "red" }}>{deleteError}</p>}
+
         <ul className={`${styles.commentWrapper}`}>
           {comments.map((comment) => (
             <li key={comment.id} className={`${styles.commentItem}`}>
