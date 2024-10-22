@@ -50,10 +50,6 @@ const PostForm = () => {
         }
       );
 
-      console.log(response);
-      // Notify parent component (PostPage) that a comment was added
-      // onPostAdded(response.data.post);
-
       // Reset the form field after submission
       setPostTitle("");
       setPostContent("");
@@ -80,7 +76,7 @@ const PostForm = () => {
         required
       />
 
-      {/* Validation errors for guest mail */}
+      {/* Validation errors for title */}
       {validationError.title && (
         <p className={styles.error}>{validationError.title}</p>
       )}
@@ -94,7 +90,7 @@ const PostForm = () => {
         required
       />
 
-      {/* Validation errors for comment content */}
+      {/* Validation errors for content */}
       {validationError.content && (
         <p className={styles.error}>{validationError.content}</p>
       )}
