@@ -5,6 +5,7 @@ import Layout from "./layout";
 import Login from "./pages/loginpage/LoginPage";
 import Dashboard from "./pages/admin/Dashboard";
 import { ManageComments } from "./pages/admin/ManageComments";
+import PublishPostPage from "./pages/admin/PublishPost";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const routes = [
@@ -37,6 +38,15 @@ const routes = [
             <ManageComments />
           </ProtectedRoute>
         ), // Sub-route for managing comments
+      },
+
+      {
+        path: "dashboard/publish",
+        element: (
+          <ProtectedRoute requiredRole="ADMIN">
+            <PublishPostPage />
+          </ProtectedRoute>
+        ), // Sub-route for publishing a post
       },
       {
         path: "posts/:postId",

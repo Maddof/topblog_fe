@@ -50,13 +50,17 @@ const Dashboard = () => {
           ? "Currently logged in as ADMIN"
           : "Currently Logged in USER"}
       </p>
-
       {role === "ADMIN" ? (
         <Link to={"comments"}> Manage Comments </Link>
       ) : (
         "Manage something"
       )}
-
+      |
+      {role === "ADMIN" ? (
+        <Link to={"publish"}> Write A Post </Link>
+      ) : (
+        "Publish something"
+      )}
       <ul>
         {posts.map((post, index) => (
           <li key={index}>{post}</li>
