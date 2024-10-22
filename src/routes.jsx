@@ -5,6 +5,7 @@ import Layout from "./layout";
 import Login from "./pages/loginpage/LoginPage";
 import Dashboard from "./pages/admin/Dashboard";
 import { ManageComments } from "./pages/admin/ManageComments";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const routes = [
   {
@@ -22,11 +23,19 @@ const routes = [
       },
       {
         path: "dashboard",
-        element: <Dashboard />, // Admin dashboard for USER AND ADMIN
+        element: (
+          <ProtectedRoute>
+            <Dashboard /> // Admin dashboard for USER AND ADMIN
+          </ProtectedRoute>
+        ),
       },
       {
         path: "dashboard/comments",
-        element: <ManageComments />, // Sub-route for managing comments
+        element: (
+          <ProtectedRoute requiredRole="ADMIN">
+            <ManageComments />
+          </ProtectedRoute>
+        ), // Sub-route for managing comments
       },
       {
         path: "posts/:postId",
