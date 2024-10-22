@@ -10,6 +10,9 @@ const ManageComments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // For fetching errors
   const [deleteError, setDeleteError] = useState(null); // For deletion errors
+  const [page, setPage] = useState(1); // Track the current page
+  const [totalPages, setTotalPages] = useState(1); // Total pages
+  const [totalComments, setTotalComments] = useState(null); // Total comments
 
   useDocumentTitle("Manage comments");
   const { accessToken, role } = useAuth();
@@ -17,17 +20,21 @@ const ManageComments = () => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await api.get("/comments");
+        const response = await api.get(
+          `/comments/paginated/?page=${page}&limit=5`
+        );
         setComments(response.data.comments);
+        setTotalPages(response.data.totalPages); // Set total number of pages
+        setTotalComments(response.data.totalComments); // Set total number of comments
         setLoading(false);
-        console.log(comments);
+        console.log(response.data);
       } catch (error) {
         setError("Failed to fetch comments");
         setLoading(false);
       }
     };
     fetchComments();
-  }, []);
+  }, [page]); // Fetch comments whenever the page changes
 
   const handleDelete = async (commentId, postId) => {
     try {
@@ -63,9 +70,9 @@ const ManageComments = () => {
     <>
       <div>
         <p>Manage you comments here</p>
+        Number of total comments: {totalComments && totalComments}
         {/* Display error if comment deletion fails */}
         {deleteError && <p style={{ color: "red" }}>{deleteError}</p>}
-
         <ul className={`${styles.commentWrapper}`}>
           {comments.map((comment) => (
             <li key={comment.id} className={`${styles.commentItem}`}>
@@ -76,6 +83,24 @@ const ManageComments = () => {
             </li>
           ))}
         </ul>
+        {/* Pagination controls */}
+        <div>
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+          >
+            Previous
+          </button>
+          <span style={{ marginInline: "10px" }}>
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={page === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );

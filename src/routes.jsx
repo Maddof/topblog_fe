@@ -24,8 +24,9 @@ const routes = [
       {
         path: "dashboard",
         element: (
+          // Admin dashboard for USER AND ADMIN
           <ProtectedRoute>
-            <Dashboard /> // Admin dashboard for USER AND ADMIN
+            <Dashboard />
           </ProtectedRoute>
         ),
       },
