@@ -87,7 +87,7 @@ const PostForm = () => {
       )}
 
       <Editor
-        apiKey="9pvomcydeaj6q20gddsz4f2k6283orsehxx8fcvr228pth6t"
+        apiKey={process.env.TINY_MCE_API_KEY}
         name="content"
         disabled={loading}
         value={postContent}
