@@ -3,6 +3,7 @@ import api from "../../config/axiosConfig";
 import styles from "../postpage/CommentForm.module.css"; // Optional CSS module for styling
 import { validatePost } from "../../utils/postValidation";
 import { useAuth } from "../../config/AuthContext";
+import { Editor } from "@tinymce/tinymce-react";
 
 const PostForm = () => {
   const [postTitle, setPostTitle] = useState("");
@@ -18,6 +19,10 @@ const PostForm = () => {
   const handleInputChange = (e, setState) => {
     const value = e.target.value;
     setState(value);
+  };
+
+  const handleEditorChange = (content) => {
+    setPostContent(content);
   };
 
   // Handle form submission
@@ -81,13 +86,22 @@ const PostForm = () => {
         <p className={styles.error}>{validationError.title}</p>
       )}
 
-      <textarea
+      <Editor
+        apiKey="9pvomcydeaj6q20gddsz4f2k6283orsehxx8fcvr228pth6t"
         name="content"
-        value={postContent}
-        onChange={(e) => handleInputChange(e, setPostContent)}
-        placeholder="Write your content here..."
         disabled={loading}
-        required
+        value={postContent}
+        init={{
+          height: 400,
+          menubar: false,
+          skin: "oxide-dark",
+          content_css: "tinymce-5-dark",
+          toolbar:
+            "undo redo | formatselect | bold italic backcolor | \
+            alignleft aligncenter alignright alignjustify | \
+            bullist numlist outdent indent | removeformat | help",
+        }}
+        onEditorChange={handleEditorChange}
       />
 
       {/* Validation errors for content */}
