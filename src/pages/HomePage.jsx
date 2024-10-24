@@ -64,9 +64,6 @@ const Home = () => {
                   ), // Sanitizing the post content
                 }}
               ></div>
-
-              {/* <p>{post.content.substring(0, 100)}...</p>{" "} */}
-              {/* Showing a snippet */}
               <Link to={`/posts/${post.id}`}>Read full post</Link>
             </li>
           ))}

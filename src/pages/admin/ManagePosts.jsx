@@ -20,7 +20,7 @@ const ManagePosts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await api.get(`/posts/public/?page=${page}&limit=2`);
+        const response = await api.get(`/posts/?page=${page}&limit=5`);
         setPosts(response.data.posts);
         setTotalPages(response.data.totalPages); // Set total number of pages
         setTotalPosts(response.data.totalPosts); // Set total number of posts
@@ -32,7 +32,7 @@ const ManagePosts = () => {
       }
     };
     fetchPosts();
-  }, [page]); // Fetch comments whenever the page changes
+  }, [page]); // Fetch posts whenever the page changes
 
   const handleDelete = async (postId) => {
     try {
@@ -43,8 +43,17 @@ const ManagePosts = () => {
       });
       console.log("Successfully deleted post ", response);
 
-      // Remove the deleted comment from the state
+      // Remove the deleted post from the state
       setPosts((prevPosts) => prevPosts.filter((posts) => posts.id !== postId));
+
+      // Decrement the total number of posts
+      setTotalPosts((prevTotal) => prevTotal - 1);
+
+      // Check if the current page now has no posts (after deletion)
+      if (posts.length === 1 && page > 1) {
+        // If no posts are left on the current page, move back a page
+        setPage(page - 1);
+      }
     } catch (error) {
       console.error("Error deleting post", error);
       setDeleteError("Failed to delete the post. Please try again.");
@@ -74,8 +83,14 @@ const ManagePosts = () => {
         <ul className={`${styles.commentWrapper}`}>
           {posts.map((post) => (
             <li key={post.id} className={`${styles.commentItem}`}>
-              {post.title}
-              <button onClick={() => handleDelete(post.id)}>DELETE</button>
+              {post.title}- ({post.id}) -
+              {post.published === true ? "Published" : "Unpublished "}
+              <button
+                style={{ marginLeft: "10px" }}
+                onClick={() => handleDelete(post.id)}
+              >
+                DELETE
+              </button>
             </li>
           ))}
         </ul>
