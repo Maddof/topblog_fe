@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../config/axiosConfig"; // Import the axios instance with baseURL
 import useDocumentTitle from "../utils/documentTitle";
+import PaginationButtons from "../components/PaginationControls";
 // Safely rendering HTML content in React
 import DOMPurify from "dompurify";
+import stripHtml from "../utils/stripHtml";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -33,6 +35,11 @@ const Home = () => {
     fetchPosts();
   }, [posts]);
 
+  // Passed as prop to pagination controls
+  const handlePageChange = (buttonPage) => {
+    setPage(buttonPage);
+  };
+
   if (loading) {
     return <p>Loading posts...</p>;
   }
@@ -53,7 +60,7 @@ const Home = () => {
               <div
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(
-                    post.content.substring(0, 50) + "..."
+                    stripHtml(post.content).substring(0, 30) + "..."
                   ), // Sanitizing the post content
                 }}
               ></div>
@@ -67,27 +74,11 @@ const Home = () => {
       ) : (
         <p>No posts available</p>
       )}
-      {totalPages > 1 ? (
-        <div>
-          <button
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            disabled={page === 1}
-          >
-            Previous
-          </button>
-          <span style={{ marginInline: "10px" }}>
-            Page {page} of {totalPages}
-          </span>
-          <button
-            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={page === totalPages}
-          >
-            Next
-          </button>
-        </div>
-      ) : (
-        ""
-      )}
+      <PaginationButtons
+        page={page}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
