@@ -20,7 +20,6 @@ const PostPage = () => {
         const response = await api.get(`/posts/${postId}`);
         setPost(response.data.post);
         setPostContent(response.data.post.content);
-        console.log(post);
       } catch (error) {
         console.error("Error fetching post:", error);
       }
@@ -53,7 +52,6 @@ const PostPage = () => {
         <b>Author</b>: {post.author.username}, <b>Published</b>:{" "}
         {formatDate(post.publishedAt)}, <b>Comments</b>: {post.comments.length}
       </p>
-      <p>{post.content}</p>
       <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
 
       <CommentForm postId={postId} onCommentAdded={handleCommentAdded} />

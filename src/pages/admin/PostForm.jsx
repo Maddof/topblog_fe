@@ -13,6 +13,8 @@ const PostForm = () => {
   const [error, setError] = useState(null); // State to manage errors
   const [validationError, setValidationError] = useState({}); // State to track validation errors
 
+  const tinyapiKey = import.meta.env.VITE_TINY_MCE_API_KEY;
+
   const { accessToken } = useAuth();
 
   // Debounced validation handler (if needed for performance)
@@ -87,7 +89,7 @@ const PostForm = () => {
       )}
 
       <Editor
-        apiKey={process.env.TINY_MCE_API_KEY}
+        apiKey={tinyapiKey}
         name="content"
         disabled={loading}
         value={postContent}

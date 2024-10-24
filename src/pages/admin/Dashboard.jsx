@@ -57,6 +57,12 @@ const Dashboard = () => {
       )}
       |
       {role === "ADMIN" ? (
+        <Link to={"posts"}> Manage Posts </Link>
+      ) : (
+        "Manage something"
+      )}
+      |
+      {role === "ADMIN" ? (
         <Link to={"publish"}> Write A Post </Link>
       ) : (
         "Publish something"
