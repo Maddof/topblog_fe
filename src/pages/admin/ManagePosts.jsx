@@ -26,7 +26,6 @@ const ManagePosts = () => {
         setTotalPages(response.data.totalPages); // Set total number of pages
         setTotalPosts(response.data.totalPosts); // Set total number of posts
         setLoading(false);
-        console.log(response.data);
       } catch (error) {
         setError("Failed to fetch posts");
         setLoading(false);
@@ -62,7 +61,6 @@ const ManagePosts = () => {
   };
 
   const handleUpdatePublish = async (post) => {
-    console.log(post);
     try {
       const response = await api.put(
         `/posts/${post.id}`,
@@ -77,7 +75,6 @@ const ManagePosts = () => {
           },
         }
       );
-      console.log("Successfully updated post ", response);
 
       // maps through the current posts and updates only the post with
       // the matching id by setting its published field to true

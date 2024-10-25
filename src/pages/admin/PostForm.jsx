@@ -13,12 +13,11 @@ const PostForm = () => {
   const [published, setPublished] = useState(true);
   const [loading, setLoading] = useState(false); // State to manage form loading
   const [error, setError] = useState(null); // State to manage errors
+  const [successMessage, setSuccessMessage] = useState(null); // State for success message
   const [validationError, setValidationError] = useState({}); // State to track validation errors
 
   const btnSubmitText = id ? "Edit post" : "Create post";
-
   const tinyapiKey = import.meta.env.VITE_TINY_MCE_API_KEY;
-
   const { accessToken } = useAuth();
 
   useEffect(() => {
@@ -30,6 +29,7 @@ const PostForm = () => {
           const response = await api.get(`/posts/${id}`);
           setPostTitle(response.data.post.title);
           setPostContent(response.data.post.content);
+          setPublished(response.data.post.published);
         } catch (error) {
           console.error("Failed to fetch post:", error);
         }
@@ -48,11 +48,16 @@ const PostForm = () => {
     setPostContent(content);
   };
 
+  const handlePublishedChange = (e) => {
+    setPublished(e.target.checked);
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setSuccessMessage(null); // Clear any previous success message
 
     // Use the external validation function
     const errors = validatePost(postContent, postTitle);
@@ -72,6 +77,7 @@ const PostForm = () => {
           { title: postTitle, content: postContent, published },
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
+        setSuccessMessage("Post updated successfully!"); // Success message for edit
       } else {
         await api.post(
           `/posts/`,
@@ -81,10 +87,11 @@ const PostForm = () => {
         // Reset the form field after submission
         setPostTitle("");
         setPostContent("");
+        setSuccessMessage("Post created successfully!"); // Success message for new post
       }
 
       // Reset the form field after submission
-      setPublished(false);
+      // setPublished(false);
       setValidationError({}); // Clear any validation errors after success
     } catch (error) {
       setError("Error submitting post.");
@@ -135,12 +142,25 @@ const PostForm = () => {
         <p className={styles.error}>{validationError.content}</p>
       )}
 
+      <label>
+        <input
+          type="checkbox"
+          checked={published}
+          onChange={handlePublishedChange}
+          disabled={loading}
+        />
+        Published
+      </label>
+
       <button type="submit" disabled={loading}>
         {loading ? "Submitting..." : btnSubmitText}
       </button>
 
+      {/* Success message */}
+      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+
       {/* Error message */}
-      {error && <p className={styles.error}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
 };
