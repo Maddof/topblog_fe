@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../../config/axiosConfig";
+import { api } from "../../config/axiosConfig";
 import styles from "./CommentForm.module.css"; // Optional CSS module for styling
 import { validateComment } from "../../utils/commentValidation";
 
@@ -49,8 +49,20 @@ const CommentForm = ({ postId, onCommentAdded }) => {
       setGuestMail("");
       setGuestName("");
       setValidationError({}); // Clear any validation errors after success
+      console.log(response.status);
+      if (response.status == 429) {
+        console.log("ERROR RESPONSE WAS 429");
+      }
     } catch (error) {
-      setError("Error submitting comment.");
+      console.log("ERROR RESPONSE:");
+      console.log(error.response);
+      console.log("END ERROR RESPONSE");
+      if (error.response && error.response.status === 429) {
+        // Specific error for too many requests
+        setError("Too many post attempts. Please try again later.");
+      } else {
+        setError("Error submitting comment.");
+      }
       console.error("Error posting comment:", error);
     } finally {
       setLoading(false);

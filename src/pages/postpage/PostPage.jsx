@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import api from "../../config/axiosConfig"; // Import the axios instance with baseURL
+import { api } from "../../config/axiosConfig"; // Import the axios instance with baseURL
+// import { api } from "../../config/axiosConfig";
 import useDocumentTitle from "../../utils/documentTitle";
 import { formatDate } from "../../utils/formatDate";
 import styles from "./PostPage.module.css";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import api from "../../config/axiosConfig";
+import { api } from "../../config/axiosConfig";
 import styles from "../postpage/CommentForm.module.css"; // Optional CSS module for styling
 import { validatePost } from "../../utils/postValidation";
 import { useAuth } from "../../config/AuthContext";

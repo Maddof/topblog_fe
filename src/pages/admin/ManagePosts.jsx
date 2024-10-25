@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../../config/axiosConfig";
+import { api } from "../../config/axiosConfig";
 import useDocumentTitle from "../../utils/documentTitle";
 import styles from "../postpage/PostPage.module.css";
 import { useAuth } from "../../config/AuthContext";
