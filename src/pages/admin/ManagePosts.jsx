@@ -5,6 +5,7 @@ import styles from "../postpage/PostPage.module.css";
 import { useAuth } from "../../config/AuthContext";
 import PaginationButtons from "../../components/PaginationControls";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../utils/formatDate";
 
 const ManagePosts = () => {
   const [posts, setPosts] = useState([]);
@@ -114,26 +115,33 @@ const ManagePosts = () => {
         <ul className={`${styles.commentWrapper}`}>
           {posts.map((post) => (
             <li key={post.id} className={`${styles.commentItem}`}>
-              {post.title}- ({post.id}) -
-              {post.published === true ? "Published" : "Unpublished "}
-              <button
-                style={{
-                  marginLeft: "10px",
-                  backgroundColor: post.published ? "red" : "green",
-                }}
-                onClick={() => handleUpdatePublish(post)}
-              >
-                {post.published ? "UNPUBLISH" : "PUBLISH"}
-              </button>
-              <button
-                style={{ marginLeft: "10px" }}
-                onClick={() => handleDelete(post.id)}
-              >
-                DELETE
-              </button>
-              <Link to={`edit-post/${post.id}`} style={{ marginLeft: "10px" }}>
-                Edit
-              </Link>
+              <div>
+                <b>{post.title}</b> - ({formatDate(post.createdAt)}) -
+                {post.published ? " Published " : " Unpublished "}
+              </div>
+              <div>
+                <button
+                  style={{
+                    marginLeft: "10px",
+                    backgroundColor: post.published ? "red" : "green",
+                  }}
+                  onClick={() => handleUpdatePublish(post)}
+                >
+                  {post.published ? "UNPUBLISH" : "PUBLISH"}
+                </button>
+                <button
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => handleDelete(post.id)}
+                >
+                  DELETE
+                </button>
+                <Link
+                  to={`edit-post/${post.id}`}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Edit
+                </Link>
+              </div>
             </li>
           ))}
         </ul>
