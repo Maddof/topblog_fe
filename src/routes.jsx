@@ -49,6 +49,14 @@ const routes = [
         ), // Sub-route for managing comments
       },
       {
+        path: "dashboard/posts/edit-post/:id",
+        element: (
+          <ProtectedRoute requiredRole="ADMIN">
+            <PublishPostPage />
+          </ProtectedRoute>
+        ), // Sub-route for editing a post
+      },
+      {
         path: "dashboard/publish",
         element: (
           <ProtectedRoute requiredRole="ADMIN">

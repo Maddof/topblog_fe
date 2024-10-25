@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import api from "../../config/axiosConfig";
 import styles from "../postpage/CommentForm.module.css"; // Optional CSS module for styling
 import { validatePost } from "../../utils/postValidation";
@@ -6,6 +7,7 @@ import { useAuth } from "../../config/AuthContext";
 import { Editor } from "@tinymce/tinymce-react";
 
 const PostForm = () => {
+  const { id } = useParams(); // Get post ID from URL
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState(""); // State for new comment content
   const [published, setPublished] = useState(true);
@@ -13,9 +15,28 @@ const PostForm = () => {
   const [error, setError] = useState(null); // State to manage errors
   const [validationError, setValidationError] = useState({}); // State to track validation errors
 
+  const btnSubmitText = id ? "Edit post" : "Create post";
+
   const tinyapiKey = import.meta.env.VITE_TINY_MCE_API_KEY;
 
   const { accessToken } = useAuth();
+
+  useEffect(() => {
+    if (id) {
+      // Fetch post details to populate the form for editing
+      // (Only if id is present in params)
+      const fetchPost = async () => {
+        try {
+          const response = await api.get(`/posts/${id}`);
+          setPostTitle(response.data.post.title);
+          setPostContent(response.data.post.content);
+        } catch (error) {
+          console.error("Failed to fetch post:", error);
+        }
+      };
+      fetchPost();
+    }
+  }, [id]);
 
   // Debounced validation handler (if needed for performance)
   const handleInputChange = (e, setState) => {
@@ -43,23 +64,26 @@ const PostForm = () => {
     }
 
     try {
-      const response = await api.post(
-        `/posts/`,
-        {
-          title: postTitle, // Request body
-          content: postContent,
-          published: true,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // Authorization header
-          },
-        }
-      );
+      // IF we have ID in params, we hit put api endpoint.
+      // Otherwise we post as usual.
+      if (id) {
+        await api.put(
+          `/posts/${id}`,
+          { title: postTitle, content: postContent, published },
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        );
+      } else {
+        await api.post(
+          `/posts/`,
+          { title: postTitle, content: postContent, published },
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        );
+        // Reset the form field after submission
+        setPostTitle("");
+        setPostContent("");
+      }
 
       // Reset the form field after submission
-      setPostTitle("");
-      setPostContent("");
       setPublished(false);
       setValidationError({}); // Clear any validation errors after success
     } catch (error) {
@@ -112,7 +136,7 @@ const PostForm = () => {
       )}
 
       <button type="submit" disabled={loading}>
-        {loading ? "Submitting..." : "Create post"}
+        {loading ? "Submitting..." : btnSubmitText}
       </button>
 
       {/* Error message */}

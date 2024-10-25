@@ -4,6 +4,7 @@ import useDocumentTitle from "../../utils/documentTitle";
 import styles from "../postpage/PostPage.module.css";
 import { useAuth } from "../../config/AuthContext";
 import PaginationButtons from "../../components/PaginationControls";
+import { Link } from "react-router-dom";
 
 const ManagePosts = () => {
   const [posts, setPosts] = useState([]);
@@ -60,6 +61,39 @@ const ManagePosts = () => {
     }
   };
 
+  const handleUpdatePublish = async (post) => {
+    console.log(post);
+    try {
+      const response = await api.put(
+        `/posts/${post.id}`,
+        {
+          title: post.title, // Request body
+          content: post.content,
+          published: post.published === true ? false : true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      console.log("Successfully updated post ", response);
+
+      // maps through the current posts and updates only the post with
+      // the matching id by setting its published field to true
+      setPosts((prevPosts) =>
+        prevPosts.map((p) =>
+          p.id === post.id
+            ? { ...p, published: post.published === true ? false : true }
+            : p
+        )
+      );
+    } catch (error) {
+      console.error("Error updating post", error);
+      setDeleteError("Failed to update the post. Please try again.");
+    }
+  };
+
   // Passed as prop to pagination controls
   const handlePageChange = (buttonPage) => {
     setPage(buttonPage);
@@ -86,11 +120,23 @@ const ManagePosts = () => {
               {post.title}- ({post.id}) -
               {post.published === true ? "Published" : "Unpublished "}
               <button
+                style={{
+                  marginLeft: "10px",
+                  backgroundColor: post.published ? "red" : "green",
+                }}
+                onClick={() => handleUpdatePublish(post)}
+              >
+                {post.published ? "UNPUBLISH" : "PUBLISH"}
+              </button>
+              <button
                 style={{ marginLeft: "10px" }}
                 onClick={() => handleDelete(post.id)}
               >
                 DELETE
               </button>
+              <Link to={`edit-post/${post.id}`} style={{ marginLeft: "10px" }}>
+                Edit
+              </Link>
             </li>
           ))}
         </ul>
