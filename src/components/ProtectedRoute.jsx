@@ -3,7 +3,14 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../config/AuthContext";
 
 const ProtectedRoute = ({ children, requiredRole }) => {
-  const { accessToken, role } = useAuth(); // Access auth state from context
+  const { accessToken, role, isLoading } = useAuth(); // Access auth state from context
+
+  if (isLoading) {
+    // Show a loading spinner or message while session is being checked
+    // Prevents Redirect Loops: By ensuring that protected routes only
+    // redirect when the session check has completed.
+    return <p>Loading...</p>;
+  }
 
   // If user is not logged in, redirect to the login page
   if (!accessToken) {

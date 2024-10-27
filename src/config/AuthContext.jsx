@@ -11,6 +11,7 @@ const useAuth = () => useContext(AuthContext);
 const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [role, setRole] = useState(null); // Store user role
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Optional: Check if there's already a session on mount
@@ -20,7 +21,12 @@ const AuthProvider = ({ children }) => {
         setAccessToken(response.data.accessToken);
         setRole(response.data.role);
       } catch (error) {
-        console.error(error);
+        // Ignore the 403 error if no valid refresh cookie is set
+        if (error.response?.status !== 403) {
+          console.error("Session check failed:", error);
+        }
+      } finally {
+        setIsLoading(false); // Set loading to false once check is complete
       }
     };
 
@@ -43,7 +49,17 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, role, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        accessToken,
+        setAccessToken,
+        role,
+        setRole,
+        login,
+        logout,
+        isLoading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -33,7 +33,7 @@ const Home = () => {
     };
 
     fetchPosts();
-  }, [posts]);
+  }, [page]);
 
   // Passed as prop to pagination controls
   const handlePageChange = (buttonPage) => {
