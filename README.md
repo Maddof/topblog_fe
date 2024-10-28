@@ -2,6 +2,9 @@
 
 TopBlog is a blogging platform that allows users to read posts and manage content through an admin dashboard. Created for a student project (The odin project). The frontend of this project is built with **React**, **React Router**, and **Vite**, with additional functionality for user authentication, role-based access, and rich-text editing.
 
+You can test site with:
+admindemo@admindemo.com / admindemo
+
 ## Table of Contents
 
 - [Tech Stack](#tech-stack)
