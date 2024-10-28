@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 // Set the base URL for Axios requests
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || "http://localhost:3000",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true, // Allow sending cookies
   validateStatus: (status) => status >= 200 && status < 300, // Only 2xx status codes are successful
 });
