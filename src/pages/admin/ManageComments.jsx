@@ -29,6 +29,7 @@ const ManageComments = () => {
         setTotalComments(response.data.totalComments); // Set total number of comments
         setLoading(false);
       } catch (error) {
+        console.log(error);
         setError("Failed to fetch comments");
         setLoading(false);
       }
@@ -78,17 +79,22 @@ const ManageComments = () => {
         Number of total comments: {totalComments && totalComments}
         {/* Display error if comment deletion fails */}
         {deleteError && <p style={{ color: "red" }}>{deleteError}</p>}
-        <ul className={`${styles.commentWrapper}`}>
-          {comments.map((comment) => (
-            <li key={comment.id} className={`${styles.commentItem}`}>
-              <Comment comment={comment} />
-              <button onClick={() => handleDelete(comment.id, comment.postId)}>
-                DELETE
-              </button>
-            </li>
-          ))}
-        </ul>
-        {/* Pagination controls */}
+        {comments.length === 0 ? (
+          <p>No comments available</p>
+        ) : (
+          <ul className={`${styles.commentWrapper}`}>
+            {comments.map((comment) => (
+              <li key={comment.id} className={`${styles.commentItem}`}>
+                <Comment comment={comment} />
+                <button
+                  onClick={() => handleDelete(comment.id, comment.postId)}
+                >
+                  DELETE
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
         <PaginationButtons
           page={page}
           totalPages={totalPages}
